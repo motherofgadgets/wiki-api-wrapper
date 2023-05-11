@@ -1,3 +1,6 @@
+import datehelpers
+
+
 def get_top_articles_by_week(project, startdate):
     """
     Get the top 1000 articles ranked by pageview numbers for 7 days following a given start date
@@ -5,6 +8,10 @@ def get_top_articles_by_week(project, startdate):
     :param startdate: The start of the week in format YYYYMMDD
     :return: a sorted list of articles
     """
+    dates = datehelpers.get_days_of_week(startdate)
+
+    # Make API call here
+
     result = []
     return result
 
@@ -16,6 +23,10 @@ def get_top_articles_by_month(project, yearmonth):
     :param yearmonth: The given month in format YYYYMM
     :return: a sorted list of articles
     """
+    month = datehelpers.get_year_slash_month(yearmonth)
+
+    # Make API call here
+
     result = []
     return result
 
@@ -28,6 +39,10 @@ def get_article_views_by_week(project, article, startdate):
     :param startdate: The start of the week in format YYYYMMDD
     :return: The total view count
     """
+    end_date = datehelpers.get_end_of_week(startdate)
+
+    # Make API call here
+
     views = 0
     return views
 
@@ -37,9 +52,13 @@ def get_article_views_by_month(project, article, yearmonth):
     Get the total number of views for a given article for a given month
     :param project: The wikimedia project
     :param article: The name of the article
-    :param startdate: The given month in format YYYYMM
+    :param yearmonth: The given month in format YYYYMM
     :return: The total view count
     """
+    start_and_end = datehelpers.get_start_slash_end_of_month(yearmonth)
+
+    # Make API call here
+
     views = 0
     return views
 
@@ -49,8 +68,12 @@ def get_article_top_day_in_month(project, article, yearmonth):
     Get the day in a given month when an article had the most views.
     :param project: The wikimedia project
     :param article: The name of the article
-    :param startdate: The given month in format YYYYMM
+    :param yearmonth: The given month in format YYYYMM
     :return: Article data with the date and number of views
     """
+    start_and_end = datehelpers.get_start_slash_end_of_month(yearmonth)
+
+    # Make API call here
+
     maxday = None
     return maxday
