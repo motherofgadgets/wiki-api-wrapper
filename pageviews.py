@@ -49,13 +49,13 @@ def get_top_articles_by_week(project, startdate):
     response_dict = {
         "items": [
             {
+                "articles": ranked_articles[:1000].to_dict(orient='records'),
+                "project": project,
                 "access": "all-access",
-                "articles": ranked_articles[:1000].to_dict(orient='records')
+                "timestamp_start": startdate + "00",
+                "timestamp_end": datehelpers.get_end_of_week(startdate) + "00",
             }
         ],
-        "timestamp_start": startdate + "00",
-        "timestamp_end": datehelpers.get_end_of_week(startdate) + "00",
-        "project": project,
     }
     return response_dict
 
