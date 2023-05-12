@@ -78,11 +78,23 @@ def get_article_views_by_week(project, article, startdate):
     :return: The total view count
     """
     end_date = datehelpers.get_end_of_week(startdate)
-
-    # Make API call here
-
-    views = 0
-    return views
+    url = '/'.join([
+        wiki_endpoints['article'],
+        project,
+        'all-access',
+        'all-agents',
+        article,
+        'daily',
+        startdate,
+        end_date
+    ])
+    total_views = 0
+    response = requests.get(url=url, headers=headers)
+    data = response.json()
+    if 'items' in data:
+        for day in data['items']:
+            total_views += day['views']
+    return total_views
 
 
 def get_article_views_by_month(project, article, yearmonth):
@@ -94,11 +106,18 @@ def get_article_views_by_month(project, article, yearmonth):
     :return: The total view count
     """
     start_and_end = datehelpers.get_start_slash_end_of_month(yearmonth)
-
-    # Make API call here
-
-    views = 0
-    return views
+    url = '/'.join([
+        wiki_endpoints['article'],
+        project,
+        'all-access',
+        'all-agents',
+        article,
+        'monthly',
+        start_and_end
+    ])
+    response = requests.get(url=url, headers=headers)
+    data = response.json()
+    return data['items'][0]['views']
 
 
 def get_article_top_day_in_month(project, article, yearmonth):

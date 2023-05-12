@@ -72,7 +72,7 @@ paths:
       responses:
         "200":
           description: "The total view count"
-  /pageviews/{project}/get_article_views_by_month/{yearmonth}:
+  /pageviews/{project}/get_article_views_by_month/{article}/{yearmonth}:
     get:
       operationId: "pageviews.get_article_views_by_month"
       summary: "Get the total number of views for a given article for a given month."
