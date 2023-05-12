@@ -1,4 +1,12 @@
 import datehelpers
+import pandas as pd
+import requests
+
+headers = {"User-Agent": "https://github.com/motherofgadgets"}
+wiki_endpoints = {
+    'top': 'https://wikimedia.org/api/rest_v1/metrics/pageviews/top',
+    'article': 'https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article',
+}
 
 
 def get_top_articles_by_week(project, startdate):
@@ -9,11 +17,35 @@ def get_top_articles_by_week(project, startdate):
     :return: a sorted list of articles
     """
     dates = datehelpers.get_days_of_week(startdate)
+    urls = [
+        '/'.join([
+            wiki_endpoints['top'],
+            project,
+            'all-access',
+            date
+        ])
+        for date in dates
+    ]
 
-    # Make API call here
+    article_data = []
+    for url in urls:
+        response = requests.get(url=url, headers=headers)
+        data = response.json()
+        if 'items' in data and len(data['items']) == 1:
+            article_data.append(pd.json_normalize(data['items'][0]['articles']))
 
-    result = []
-    return result
+    # combines all results into single DataFrame
+    merged_articles = pd.concat(article_data)
+
+    # Groups articles by 'article' and adds up 'view's
+    grouped_articles = merged_articles.groupby('article')['views'].sum().reset_index()
+
+    # Sorts articles by number of views
+    ranked_articles = grouped_articles.sort_values('views', ascending=False).reset_index(drop=True)
+
+    # Sets 'rank' value to index
+    ranked_articles['rank'] = ranked_articles.index + 1
+    return ranked_articles[:10].to_dict(orient='records')
 
 
 def get_top_articles_by_month(project, yearmonth):
