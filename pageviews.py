@@ -90,7 +90,7 @@ def get_top_articles_by_month(project, yearmonth):
             }
         ],
     }
-    return data
+    return response_dict
 
 
 def get_article_views_by_week(project, article, startdate):
