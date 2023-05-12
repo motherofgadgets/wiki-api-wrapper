@@ -45,7 +45,19 @@ def get_top_articles_by_week(project, startdate):
 
     # Sets 'rank' value to index
     ranked_articles['rank'] = ranked_articles.index + 1
-    return ranked_articles[:1000].to_dict(orient='records')
+
+    response_dict = {
+        "items": [
+            {
+                "access": "all-access",
+                "articles": ranked_articles[:1000].to_dict(orient='records')
+            }
+        ],
+        "timestamp_start": startdate + "00",
+        "timestamp_end": datehelpers.get_end_of_week(startdate) + "00",
+        "project": project,
+    }
+    return response_dict
 
 
 def get_top_articles_by_month(project, yearmonth):
@@ -77,7 +89,7 @@ def get_article_views_by_week(project, article, startdate):
     :param startdate: The start of the week in format YYYYMMDD
     :return: The total view count
     """
-    end_date = datehelpers.get_end_of_week(startdate)
+    enddate = datehelpers.get_end_of_week(startdate)
     url = '/'.join([
         wiki_endpoints['article'],
         project,
@@ -86,7 +98,7 @@ def get_article_views_by_week(project, article, startdate):
         article,
         'daily',
         startdate,
-        end_date
+        enddate
     ])
     total_views = 0
     response = requests.get(url=url, headers=headers)
@@ -94,7 +106,22 @@ def get_article_views_by_week(project, article, startdate):
     if 'items' in data:
         for day in data['items']:
             total_views += day['views']
-    return total_views
+
+    response_dict = {
+      "items": [
+        {
+          "access": "all-access",
+          "agent": "all-agents",
+          "article": article,
+          "granularity": "monthly",
+          "project": project,
+          "timestamp_start": startdate + "00",
+          "timestamp_end": enddate + "00",
+          "views": total_views
+        }
+      ]
+    }
+    return response_dict
 
 
 def get_article_views_by_month(project, article, yearmonth):
@@ -117,7 +144,7 @@ def get_article_views_by_month(project, article, yearmonth):
     ])
     response = requests.get(url=url, headers=headers)
     data = response.json()
-    return data['items'][0]['views']
+    return data
 
 
 def get_article_top_day_in_month(project, article, yearmonth):
@@ -141,5 +168,10 @@ def get_article_top_day_in_month(project, article, yearmonth):
     response = requests.get(url=url, headers=headers)
     data = response.json()
     if 'items' in data and len(data['items']) > 0:
-        return max(data['items'], key=lambda ev: ev['views'])
+        response_dict = {
+          "items": [
+            max(data['items'], key=lambda ev: ev['views'])
+          ]
+        }
+        return response_dict
     return data
