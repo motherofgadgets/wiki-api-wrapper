@@ -45,7 +45,7 @@ def get_top_articles_by_week(project, startdate):
 
     # Sets 'rank' value to index
     ranked_articles['rank'] = ranked_articles.index + 1
-    return ranked_articles[:10].to_dict(orient='records')
+    return ranked_articles[:1000].to_dict(orient='records')
 
 
 def get_top_articles_by_month(project, yearmonth):
