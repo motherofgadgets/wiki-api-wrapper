@@ -56,11 +56,17 @@ def get_top_articles_by_month(project, yearmonth):
     :return: a sorted list of articles
     """
     month = datehelpers.get_year_slash_month(yearmonth)
+    url = '/'.join([
+            wiki_endpoints['top'],
+            project,
+            'all-access',
+            month,
+            'all-days'
+        ])
+    response = requests.get(url=url, headers=headers)
 
-    # Make API call here
-
-    result = []
-    return result
+    data = response.json()
+    return data
 
 
 def get_article_views_by_week(project, article, startdate):
