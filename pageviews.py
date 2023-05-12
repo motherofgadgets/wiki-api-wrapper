@@ -78,6 +78,18 @@ def get_top_articles_by_month(project, yearmonth):
     response = requests.get(url=url, headers=headers)
 
     data = response.json()
+
+    response_dict = {
+        "items": [
+            {
+                "articles": data['items'][0]["articles"],
+                "project": project,
+                "access": "all-access",
+                "timestamp_start": yearmonth + "0100",
+                "timestamp_end": datehelpers.g + "00",
+            }
+        ],
+    }
     return data
 
 
@@ -132,7 +144,7 @@ def get_article_views_by_month(project, article, yearmonth):
     :param yearmonth: The given month in format YYYYMM
     :return: The total view count
     """
-    start_and_end = datehelpers.get_start_slash_end_of_month(yearmonth)
+    monthend = datehelpers.get_end_of_month(yearmonth)
     url = '/'.join([
         wiki_endpoints['article'],
         project,
@@ -140,7 +152,8 @@ def get_article_views_by_month(project, article, yearmonth):
         'all-agents',
         article,
         'monthly',
-        start_and_end
+        yearmonth + "01",
+        monthend
     ])
     response = requests.get(url=url, headers=headers)
     data = response.json()
@@ -155,7 +168,7 @@ def get_article_top_day_in_month(project, article, yearmonth):
     :param yearmonth: The given month in format YYYYMM
     :return: Article data with the date and number of views
     """
-    start_and_end = datehelpers.get_start_slash_end_of_month(yearmonth)
+    monthend = datehelpers.get_end_of_month(yearmonth)
     url = '/'.join([
         wiki_endpoints['article'],
         project,
@@ -163,7 +176,8 @@ def get_article_top_day_in_month(project, article, yearmonth):
         'all-agents',
         article,
         'daily',
-        start_and_end
+        yearmonth + "01",
+        monthend
     ])
     response = requests.get(url=url, headers=headers)
     data = response.json()

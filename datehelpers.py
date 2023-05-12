@@ -37,13 +37,13 @@ def get_end_of_week(startdate):
     return end_date.strftime('%Y%m%d')
 
 
-def get_start_slash_end_of_month(yearmonth):
+def get_end_of_month(yearmonth):
     """
-    Get a string representing the first and last days of a month in YYYYMMDD format separated by a backslash
+    Get a string representing the last date in the given month
     :param yearmonth: The given month in format YYYYMM
-    :return: the first and last days of a month in YYYYMMDD format separated by a backslash
+    :return: The end of the month in format YYYYMMDD
     """
     month = datetime.strptime(yearmonth, '%Y%m')
     month_range = calendar.monthrange(month.year, month.month)
 
-    return "{month}01/{month}{end}".format(month=yearmonth, end=month_range[1])
+    return "{month}{end}".format(month=yearmonth, end=month_range[1])
