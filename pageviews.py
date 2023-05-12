@@ -86,7 +86,7 @@ def get_top_articles_by_month(project, yearmonth):
                 "project": project,
                 "access": "all-access",
                 "timestamp_start": yearmonth + "0100",
-                "timestamp_end": datehelpers.g + "00",
+                "timestamp_end": datehelpers.get_end_of_month(yearmonth) + "00",
             }
         ],
     }
