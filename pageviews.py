@@ -129,8 +129,17 @@ def get_article_top_day_in_month(project, article, yearmonth):
     :return: Article data with the date and number of views
     """
     start_and_end = datehelpers.get_start_slash_end_of_month(yearmonth)
-
-    # Make API call here
-
-    maxday = None
-    return maxday
+    url = '/'.join([
+        wiki_endpoints['article'],
+        project,
+        'all-access',
+        'all-agents',
+        article,
+        'daily',
+        start_and_end
+    ])
+    response = requests.get(url=url, headers=headers)
+    data = response.json()
+    if 'items' in data and len(data['items']) > 0:
+        return max(data['items'], key=lambda ev: ev['views'])
+    return data
