@@ -78,7 +78,11 @@ def get_top_articles_by_month(project, yearmonth):
     :param yearmonth: The given month in format YYYYMM
     :return: a sorted list of articles
     """
-    month = datehelpers.get_year_slash_month(yearmonth)
+    try:
+        month = datehelpers.get_year_slash_month(yearmonth)
+    except ValueError:
+        raise exceptions.BadRequest(yearmonth)
+
     url = '/'.join([
             wiki_endpoints['top'],
             project,
@@ -114,7 +118,11 @@ def get_article_views_by_week(project, article, startdate):
     :param startdate: The start of the week in format YYYYMMDD
     :return: The total view count
     """
-    enddate = datehelpers.get_end_of_week(startdate)
+    try:
+        enddate = datehelpers.get_end_of_week(startdate)
+    except ValueError:
+        raise exceptions.BadRequest(startdate)
+
     url = '/'.join([
         wiki_endpoints['article'],
         project,
@@ -158,7 +166,11 @@ def get_article_views_by_month(project, article, yearmonth):
     :param yearmonth: The given month in format YYYYMM
     :return: The total view count
     """
-    monthend = datehelpers.get_end_of_month(yearmonth)
+    try:
+        monthend = datehelpers.get_end_of_month(yearmonth)
+    except ValueError:
+        raise exceptions.BadRequest(yearmonth)
+
     url = '/'.join([
         wiki_endpoints['article'],
         project,
@@ -196,7 +208,10 @@ def get_article_top_day_in_month(project, article, yearmonth):
     :param yearmonth: The given month in format YYYYMM
     :return: Article data with the date and number of views
     """
-    monthend = datehelpers.get_end_of_month(yearmonth)
+    try:
+        monthend = datehelpers.get_end_of_month(yearmonth)
+    except ValueError:
+        raise exceptions.BadRequest(yearmonth)
     url = '/'.join([
         wiki_endpoints['article'],
         project,
