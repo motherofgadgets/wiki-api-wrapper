@@ -16,20 +16,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TopArticlesByProject'
-    ArticleViewDataRangeItems:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/RangeArticleViewData'
-    ArticleViewDataDayItems:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/DayArticleViewData'
     TopArticlesByProject:
       type: object
       properties:
@@ -167,7 +153,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArticleViewDataRangeItems'
+                $ref: '#/components/schemas/RangeArticleViewData'
   /pageviews/{project}/get_article_views_by_month/{article}/{yearmonth}:
     get:
       operationId: "pageviews.get_article_views_by_month"
@@ -198,7 +184,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArticleViewDataRangeItems'
+                $ref: '#/components/schemas/RangeArticleViewData'
   /pageviews/{project}/get_article_top_day_in_month/{article}/{yearmonth}:
     get:
       operationId: "pageviews.get_article_top_day_in_month"
@@ -229,4 +215,4 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArticleViewDataDayItems'
+                $ref: '#/components/schemas/DayArticleViewData'
