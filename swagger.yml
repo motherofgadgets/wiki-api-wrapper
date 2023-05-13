@@ -3,8 +3,89 @@ info:
   title: "Wikipedia Pageviews API"
   description: "An API to get pageview information from Wikipedia"
   version: "1.0.0"
+
 servers:
   - url: "/api"
+
+components:
+  schemas:
+    TopArticlesItems:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopArticlesByProject'
+    ArticleViewDataRangeItems:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RangeArticleViewData'
+    ArticleViewDataDayItems:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayArticleViewData'
+    TopArticlesByProject:
+      type: object
+      properties:
+        project:
+          type: string
+        access:
+          type: string
+        timestamp_start:
+          type: string
+        timestamp_end:
+          type: string
+        articles:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopArticle'
+    TopArticle:
+      type: object
+      properties:
+        rank:
+          type: integer
+        article:
+          type: string
+        views:
+          type: integer
+    ArticleViewData:
+      type: object
+      properties:
+        access:
+          type: string
+        agent:
+          type: string
+        article:
+          type: string
+        granularity:
+          type: string
+        project:
+          type: string
+        views:
+          type: integer
+    DayArticleViewData:
+      allOf:
+        - $ref: '#/components/schemas/ArticleViewData'
+        - type: object
+          properties:
+            timestamp:
+              type: string
+    RangeArticleViewData:
+      allOf:
+        - $ref: '#/components/schemas/ArticleViewData'
+        - type: object
+          properties:
+            timestamp_end:
+              type: string
+            timestamp_start:
+              type: string
+
 paths:
   /pageviews/{project}/top_articles_by_week/{startdate}:
     get:
@@ -17,6 +98,7 @@ paths:
           required: true
           schema:
             type: string
+            default: "en.wikipedia.org"
         - name: startdate
           in: path
           description: "The first day of the week for which to retrieve top articles, in YYYYMMDD format."
@@ -25,7 +107,11 @@ paths:
             type: string
       responses:
         "200":
-          description: "A sorted list of articles"
+          description: "A list of top articles ranked by page views."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TopArticlesItems"
   /pageviews/{project}/get_top_articles_by_month/{yearmonth}:
     get:
       operationId: "pageviews.get_top_articles_by_month"
@@ -37,6 +123,7 @@ paths:
           required: true
           schema:
             type: string
+            default: "en.wikipedia.org"
         - name: yearmonth
           in: path
           description: "The year and month for which to retrieve top articles, in YYYYMM format."
@@ -45,7 +132,11 @@ paths:
             type: string
       responses:
         "200":
-          description: "A sorted list of articles"
+          description: "A list of top articles ranked by page views."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TopArticlesItems"
   /pageviews/{project}/get_article_views_by_week/{article}/{startdate}:
     get:
       operationId: "pageviews.get_article_views_by_week"
@@ -57,6 +148,7 @@ paths:
           required: true
           schema:
             type: string
+            default: "en.wikipedia.org"
         - name: article
           in: path
           description: "'The title of any article in the specified project. Any spaces should be replaced with underscores. It also should be URI-encoded, so that non-URI-safe characters like %, / or ? are accepted. Example: Are_You_the_One%3F'."
@@ -72,6 +164,10 @@ paths:
       responses:
         "200":
           description: "The total view count"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleViewDataRangeItems'
   /pageviews/{project}/get_article_views_by_month/{article}/{yearmonth}:
     get:
       operationId: "pageviews.get_article_views_by_month"
@@ -83,6 +179,7 @@ paths:
           required: true
           schema:
             type: string
+            default: "en.wikipedia.org"
         - name: article
           in: path
           description: "'The title of any article in the specified project. Any spaces should be replaced with underscores. It also should be URI-encoded, so that non-URI-safe characters like %, / or ? are accepted. Example: Are_You_the_One%3F'."
@@ -98,6 +195,10 @@ paths:
       responses:
         "200":
           description: "The total view count"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleViewDataRangeItems'
   /pageviews/{project}/get_article_top_day_in_month/{article}/{yearmonth}:
     get:
       operationId: "pageviews.get_article_top_day_in_month"
@@ -109,6 +210,7 @@ paths:
           required: true
           schema:
             type: string
+            default: "en.wikipedia.org"
         - name: article
           in: path
           description: "'The title of any article in the specified project. Any spaces should be replaced with underscores. It also should be URI-encoded, so that non-URI-safe characters like %, / or ? are accepted. Example: Are_You_the_One%3F'."
@@ -124,3 +226,7 @@ paths:
       responses:
         "200":
           description: "Article data with the date and number of views"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleViewDataDayItems'
