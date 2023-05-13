@@ -1,6 +1,7 @@
 import datehelpers
 import pandas as pd
 import requests
+import exceptions
 
 headers = {"User-Agent": "https://github.com/motherofgadgets"}
 wiki_endpoints = {
@@ -16,7 +17,14 @@ def get_top_articles_by_week(project, startdate):
     :param startdate: The start of the week in format YYYYMMDD
     :return: a sorted list of articles
     """
-    dates = datehelpers.get_days_of_week(startdate)
+    try:
+        dates = datehelpers.get_days_of_week(startdate)
+    except ValueError:
+        raise exceptions.BadRequest(startdate)
+
+    if not dates:
+        raise exceptions.MyDataNotFound(startdate)
+
     urls = [
         '/'.join([
             wiki_endpoints['top'],
