@@ -71,6 +71,23 @@ components:
               type: string
             timestamp_start:
               type: string
+    Problem:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        instance:
+          type: string
+        status:
+          type: integer
+        method:
+          type: string
+        uri:
+          type: string
 
 paths:
   /pageviews/{project}/top_articles_by_week/{startdate}:
@@ -98,6 +115,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TopArticlesItems"
+        default:
+          description: "Unexpected Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Problem"
   /pageviews/{project}/get_top_articles_by_month/{yearmonth}:
     get:
       operationId: "pageviews.get_top_articles_by_month"
@@ -123,6 +146,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TopArticlesItems"
+        default:
+          description: "Unexpected Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Problem"
   /pageviews/{project}/get_article_views_by_week/{article}/{startdate}:
     get:
       operationId: "pageviews.get_article_views_by_week"
@@ -154,6 +183,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RangeArticleViewData'
+        default:
+          description: "Unexpected Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Problem"
   /pageviews/{project}/get_article_views_by_month/{article}/{yearmonth}:
     get:
       operationId: "pageviews.get_article_views_by_month"
@@ -185,6 +220,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RangeArticleViewData'
+        default:
+          description: "Unexpected Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Problem"
   /pageviews/{project}/get_article_top_day_in_month/{article}/{yearmonth}:
     get:
       operationId: "pageviews.get_article_top_day_in_month"
@@ -216,3 +257,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DayArticleViewData'
+        default:
+          description: "Unexpected Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Problem"
