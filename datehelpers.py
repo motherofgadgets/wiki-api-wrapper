@@ -6,13 +6,15 @@ def get_days_of_week(startdate):
     """
     Gets list of 7 days from given start date
     :param startdate: The start of the week in format YYYYMMDD
-    :return: A list of seven date strings in YYYY/MM/DD format
+    :return: A list of date strings in YYYY/MM/DD format
     """
+    yesterday = datetime.today() - timedelta(days=1)
     parsed_date = datetime.strptime(startdate, '%Y%m%d')
     dates = []
     for day in range(7):
         weekday = parsed_date + timedelta(days=day)
-        dates.append(weekday.strftime('%Y/%m/%d'))
+        if weekday.date() <= yesterday.date():
+            dates.append(weekday.strftime('%Y/%m/%d'))
     return dates
 
 

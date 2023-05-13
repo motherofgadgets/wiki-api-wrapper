@@ -2,8 +2,6 @@ import datehelpers
 import pandas as pd
 import requests
 
-from connexion import problem
-
 headers = {"User-Agent": "https://github.com/motherofgadgets"}
 wiki_endpoints = {
     'top': 'https://wikimedia.org/api/rest_v1/metrics/pageviews/top',
