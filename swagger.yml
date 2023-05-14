@@ -121,7 +121,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Problem"
-  /pageviews/{project}/get_top_articles_by_month/{yearmonth}:
+  /pageviews/{project}/top_articles_by_month/{yearmonth}:
     get:
       operationId: "pageviews.get_top_articles_by_month"
       summary: "Get the top 1000 articles ranked by pageview numbers for a given month."
@@ -152,7 +152,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Problem"
-  /pageviews/{project}/get_article_views_by_week/{article}/{startdate}:
+  /pageviews/{project}/article_views_by_week/{article}/{startdate}:
     get:
       operationId: "pageviews.get_article_views_by_week"
       summary: "Get the total number of views for a given article for 7 days following a given start date."
@@ -189,7 +189,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Problem"
-  /pageviews/{project}/get_article_views_by_month/{article}/{yearmonth}:
+  /pageviews/{project}/article_views_by_month/{article}/{yearmonth}:
     get:
       operationId: "pageviews.get_article_views_by_month"
       summary: "Get the total number of views for a given article for a given month."
@@ -226,7 +226,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Problem"
-  /pageviews/{project}/get_article_top_day_in_month/{article}/{yearmonth}:
+  /pageviews/{project}/article_top_day_in_month/{article}/{yearmonth}:
     get:
       operationId: "pageviews.get_article_top_day_in_month"
       summary: "Get the day in a given month when an article had the most views."
