@@ -1,4 +1,4 @@
-# gt-takehome-first-draft
+# wiki-api-wrapper
 
 # Overview
 This project is a Flask API that consumes data from endpoints in the [Wikipedia API](https://wikitech.wikimedia.org/wiki/Analytics/AQS/Pageviews) and can be used to retrieve:
